@@ -1,22 +1,19 @@
 using UnityEngine;
 
-namespace MindfreakStudios.Scripts.Common
+public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
-    public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
-    {
-        private static T _instance;
-        public static T Instance => _instance;
+    private static T _instance;
+    public static T Instance => _instance;
 
-        protected void InitializeSingleton()
+    protected void InitializeSingleton()
+    {
+        if (_instance == null)
         {
-            if (_instance == null)
-            {
-                _instance = this as T;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            _instance = this as T;
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 }
