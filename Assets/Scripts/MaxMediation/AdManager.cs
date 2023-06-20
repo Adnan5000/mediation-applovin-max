@@ -1,34 +1,48 @@
 using com.adjust.sdk;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AdManager : MonoSingleton<AdManager>
+public class AdManager : MonoBehaviour
 {
+    private static AdManager instance;
 
+    private AdManager() { }
+
+    public static AdManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new AdManager();
+
+            }
+
+            return instance;
+        }
+    }
     [Header("Banner Position")]
     [SerializeField] private MaxSdk.BannerPosition bannerPosition;
     [Header("MREC Position")]
     [SerializeField] MaxSdkBase.AdViewPosition mRECPosition;
 
     [Header("Max Key")]
-    [SerializeField] private string MaxSdkKey = "KPlIpg_x0W5xfPX0p58p3FLLTfQcvyCELyX9dW4d1AZhZ5hNBrBE5XaeC_F5xSKHOsQ1MUfNfD3EImbUbokgJI";
+    private string MaxSdkKey = "KPlIpg_x0W5xfPX0p58p3FLLTfQcvyCELyX9dW4d1AZhZ5hNBrBE5XaeC_F5xSKHOsQ1MUfNfD3EImbUbokgJI";
 
     [Header("Ad IDs")]
 #if UNITY_IOS
-    [SerializeField]private string InterstitialAdUnitId = "ENTER_IOS_INTERSTITIAL_AD_UNIT_ID_HERE";
-    [SerializeField]private string RewardedAdUnitId = "ENTER_IOS_REWARD_AD_UNIT_ID_HERE";
-    [SerializeField]private string RewardedInterstitialAdUnitId = "ENTER_IOS_REWARD_INTER_AD_UNIT_ID_HERE";
-    [SerializeField]private string BannerAdUnitId = "ENTER_IOS_BANNER_AD_UNIT_ID_HERE";
-    [SerializeField]private string MRecAdUnitId = "ENTER_IOS_MREC_AD_UNIT_ID_HERE";
+     private const string InterstitialAdUnitId = "ENTER_IOS_INTERSTITIAL_AD_UNIT_ID_HERE";
+     private const string RewardedAdUnitId = "ENTER_IOS_REWARD_AD_UNIT_ID_HERE";
+     private const string RewardedInterstitialAdUnitId = "ENTER_IOS_REWARD_INTER_AD_UNIT_ID_HERE";
+     private const string BannerAdUnitId = "ENTER_IOS_BANNER_AD_UNIT_ID_HERE";
+     private const string MRecAdUnitId = "ENTER_IOS_MREC_AD_UNIT_ID_HERE";
 #else // UNITY_ANDROID
-    [SerializeField] private string InterstitialAdUnitId = "52c5672c0d85ac84";
-    [SerializeField] private string RewardedAdUnitId = "5740f980d68a926b";
-    [SerializeField] private string RewardedInterstitialAdUnitId = "ENTER_ANDROID_REWARD_INTER_AD_UNIT_ID_HERE";
-    [SerializeField] private string BannerAdUnitId = "5b0968aff3d464aa";
-    [SerializeField] private string MRecAdUnitId = "2812f4253555b165";
+    private const string InterstitialAdUnitId = "52c5672c0d85ac84";
+    private const string RewardedAdUnitId = "5740f980d68a926b";
+    private const string RewardedInterstitialAdUnitId = "ENTER_ANDROID_REWARD_INTER_AD_UNIT_ID_HERE";
+    private const string BannerAdUnitId = "5b0968aff3d464aa";
+    private const string MRecAdUnitId = "2812f4253555b165";
 #endif
     public Button mediationDebuggerButton;
     public Text interstitialStatusText;
@@ -41,6 +55,7 @@ public class AdManager : MonoSingleton<AdManager>
 
     void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
 
         mediationDebuggerButton.onClick.AddListener(MaxSdk.ShowMediationDebugger);
         MaxSdkCallbacks.OnSdkInitializedEvent += sdkConfiguration =>

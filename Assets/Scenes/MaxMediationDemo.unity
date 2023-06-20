@@ -493,7 +493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bannerPosition: 1
-  mRECPosition: 1
+  mRECPosition: 4
   MaxSdkKey: KPlIpg_x0W5xfPX0p58p3FLLTfQcvyCELyX9dW4d1AZhZ5hNBrBE5XaeC_F5xSKHOsQ1MUfNfD3EImbUbokgJI
   InterstitialAdUnitId: 52c5672c0d85ac84
   RewardedAdUnitId: 5740f980d68a926b
