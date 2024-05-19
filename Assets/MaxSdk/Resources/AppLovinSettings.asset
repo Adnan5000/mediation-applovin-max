@@ -15,6 +15,9 @@ MonoBehaviour:
   qualityServiceEnabled: 1
   sdkKey: KPlIpg_x0W5xfPX0p58p3FLLTfQcvyCELyX9dW4d1AZhZ5hNBrBE5XaeC_F5xSKHOsQ1MUfNfD3EImbUbokgJI
   setAttributionReportEndpoint: 0
+  addApsSkAdNetworkIds: 0
+  customGradleVersionUrl: 
+  customGradleToolsVersion: 
   consentFlowEnabled: 0
   consentFlowPlatform: 0
   consentFlowPrivacyPolicyUrl: 
