@@ -549,6 +549,10 @@ public class AdManager : MonoBehaviour
 
     #endregion
 
+    public void ShowDebugger()
+    {
+        MaxSdk.ShowMediationDebugger();
+    }
 
     private void TrackAdRevenue(MaxSdkBase.AdInfo adInfo)
     {
@@ -561,4 +565,6 @@ public class AdManager : MonoBehaviour
 
         Adjust.trackAdRevenue(adjustAdRevenue);
     }
+
+
 }
