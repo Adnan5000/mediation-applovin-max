@@ -18,9 +18,6 @@ dependencyResolutionManagement {
         mavenCentral()
 // Android Resolver Repos Start
         def unityProjectPath = $/file:///**DIR_UNITYPROJECT**/$.replace("\\", "/")
-        maven {
-            url "https://cboost.jfrog.io/artifactory/chartboost-ads/" // Assets/MaxSdk/Mediation/Chartboost/Editor/Dependencies.xml:8
-        }
         mavenLocal()
 // Android Resolver Repos End
         flatDir {

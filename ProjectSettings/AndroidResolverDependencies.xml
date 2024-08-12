@@ -1,16 +1,14 @@
 <dependencies>
   <packages>
-    <package>com.applovin.mediation:chartboost-adapter:9.7.0.0</package>
-    <package>com.applovin.mediation:facebook-adapter:[6.17.0.0]</package>
-    <package>com.applovin.mediation:google-adapter:[23.1.0.0]</package>
-    <package>com.applovin.mediation:unityads-adapter:4.11.3.0</package>
-    <package>com.applovin:applovin-sdk:12.5.0</package>
-    <package>com.google.android.gms:play-services-base:16.1.0</package>
+    <package>com.applovin.mediation:google-adapter:[23.2.0.0]</package>
+    <package>com.applovin.mediation:unityads-adapter:4.12.2.0</package>
+    <package>com.applovin:applovin-sdk:12.6.0</package>
+    <package>com.google.android.ump:user-messaging-platform:2.+</package>
   </packages>
   <files />
   <settings>
     <setting name="androidAbis" value="armeabi-v7a" />
-    <setting name="bundleId" value="com.abc.maxmediation" />
+    <setting name="bundleId" value="com.ludic.sampleapp" />
     <setting name="explodeAars" value="True" />
     <setting name="gradleBuildEnabled" value="True" />
     <setting name="gradlePropertiesTemplateEnabled" value="True" />

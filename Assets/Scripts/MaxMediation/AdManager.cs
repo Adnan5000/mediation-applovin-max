@@ -28,7 +28,7 @@ public class AdManager : MonoBehaviour
     [SerializeField] MaxSdkBase.AdViewPosition mRECPosition;
 
     [Header("Max Key")]
-    private string MaxSdkKey = "KPlIpg_x0W5xfPX0p58p3FLLTfQcvyCELyX9dW4d1AZhZ5hNBrBE5XaeC_F5xSKHOsQ1MUfNfD3EImbUbokgJI";
+    private string MaxSdkKey = "_Qcr2PuHvbQ1Us1TW3EzVIrbTnpgkppfs9GmCaomuyybp_zlhzLoZmP5KPdCfLgFaxGbWES9hw4DMTFWMykq3F";
 
     [Header("Ad IDs")]
 #if UNITY_IOS
@@ -38,20 +38,23 @@ public class AdManager : MonoBehaviour
      private const string BannerAdUnitId = "ENTER_IOS_BANNER_AD_UNIT_ID_HERE";
      private const string MRecAdUnitId = "ENTER_IOS_MREC_AD_UNIT_ID_HERE";
 #else // UNITY_ANDROID
-    private const string InterstitialAdUnitId = "52c5672c0d85ac84";
-    private const string RewardedAdUnitId = "5740f980d68a926b";
+    private const string InterstitialAdUnitId = "0053fd7ea0f85a2e";
+    private const string RewardedAdUnitId = "9f4dca4f48430e2c";
     private const string RewardedInterstitialAdUnitId = "ENTER_ANDROID_REWARD_INTER_AD_UNIT_ID_HERE";
-    private const string BannerAdUnitId = "5b0968aff3d464aa";
-    private const string MRecAdUnitId = "2812f4253555b165";
+    private const string BannerAdUnitId = "4df5237c9e1603ea";
+    private const string MRecAdUnitId = "df3d83c31781d5fe";
+    private const string AppOpenAdUnitId = "0ce3748b5013e280"; // by GH
 #endif
     public Button mediationDebuggerButton;
     public Text interstitialStatusText;
     public Text rewardedStatusText;
     public Text rewardedInterstitialStatusText;
+    public Text AppOpenStatusText;
 
     private int interstitialRetryAttempt;
     private int rewardedRetryAttempt;
     private int rewardedInterstitialRetryAttempt;
+    private int AppOpenRetryAttempt;
 
     void Start()
     {
@@ -68,9 +71,10 @@ public class AdManager : MonoBehaviour
             InitializeRewardedInterstitialAds();
             InitializeBannerAds();
             InitializeMRecAds();
-
-                // Initialize Adjust SDK
-                AdjustConfig adjustConfig = new AdjustConfig("YourAppToken", AdjustEnvironment.Sandbox);
+            InitializeAppOpenAds();//by GH
+            ShowAppOpen();//by GH
+            // Initialize Adjust SDK
+            AdjustConfig adjustConfig = new AdjustConfig("YourAppToken", AdjustEnvironment.Sandbox);
             Adjust.start(adjustConfig);
         };
 
@@ -566,5 +570,93 @@ public class AdManager : MonoBehaviour
         Adjust.trackAdRevenue(adjustAdRevenue);
     }
 
+    //............... by GH
 
+    #region AppOpen Ad Methods
+
+    private void InitializeAppOpenAds()
+    {
+        MaxSdkCallbacks.AppOpen.OnAdLoadedEvent += OnAppOpenLoadedEvent;
+        MaxSdkCallbacks.AppOpen.OnAdLoadFailedEvent += OnAppOpenFailedEvent;
+        MaxSdkCallbacks.AppOpen.OnAdDisplayFailedEvent += AppOpenlFailedToDisplayEvent;
+        MaxSdkCallbacks.AppOpen.OnAdHiddenEvent += OnAppOpenDismissedEvent;
+        MaxSdkCallbacks.AppOpen.OnAdRevenuePaidEvent += OnAppOpenRevenuePaidEvent;
+        LoadAppOpen();
+    }
+
+    void LoadAppOpen()
+    {
+        AppOpenStatusText.text = "Loading...";
+        MaxSdk.LoadAppOpenAd(AppOpenAdUnitId);
+
+    }
+
+    public void ShowAppOpen()
+    {
+        if (MaxSdk.IsAppOpenAdReady(AppOpenAdUnitId))
+        {
+            AppOpenStatusText.text = "Showing";
+            MaxSdk.ShowAppOpenAd(AppOpenAdUnitId);
+        }
+        else
+        {
+            AppOpenStatusText.text = "Ad not ready";
+        }
+    }
+    private void OnAppOpenLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
+    {
+
+        AppOpenStatusText.text = "Loaded";
+        Debug.Log("AppOpen loaded");
+
+        // Reset retry attempt
+        AppOpenRetryAttempt = 0;
+    }
+
+    private void OnAppOpenFailedEvent(string adUnitId, MaxSdkBase.ErrorInfo errorInfo)
+    {
+
+        AppOpenRetryAttempt++;
+        double retryDelay = Math.Pow(2, Math.Min(6, AppOpenRetryAttempt));
+
+        AppOpenStatusText.text = "Load failed: " + errorInfo.Code + "\nRetrying in " + retryDelay + "s...";
+        Debug.Log("AppOpen failed to load with error code: " + errorInfo.Code);
+
+        Invoke("LoadAppOpen", (float)retryDelay);
+    }
+
+    private void AppOpenlFailedToDisplayEvent(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
+    {
+
+        Debug.Log("AppOpen failed to display with error code: " + errorInfo.Code);
+        LoadAppOpen();
+    }
+
+    private void OnAppOpenDismissedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
+    {
+
+        Debug.Log("AppOpen dismissed");
+        LoadAppOpen();
+    }
+
+    private void OnAppOpenRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
+    {
+
+        Debug.Log("AppOpen revenue paid");
+
+        // Ad revenue
+        double revenue = adInfo.Revenue;
+
+        // Miscellaneous data
+        string countryCode = MaxSdk.GetSdkConfiguration().CountryCode; // "US" for the United States, etc - Note: Do not confuse this with currency code which is "USD"!
+        string networkName = adInfo.NetworkName; // Display name of the network that showed the ad (e.g. "AdColony")
+        string adUnitIdentifier = adInfo.AdUnitIdentifier; // The MAX Ad Unit ID
+        string placement = adInfo.Placement; // The placement this ad's postbacks are tied to
+
+        TrackAdRevenue(adInfo);
+    }
+
+
+
+    #endregion
 }

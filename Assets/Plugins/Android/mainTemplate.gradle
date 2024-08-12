@@ -4,12 +4,10 @@ apply plugin: 'com.android.library'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 // Android Resolver Dependencies Start
-    implementation 'com.applovin.mediation:chartboost-adapter:9.7.0.0' // Assets/MaxSdk/Mediation/Chartboost/Editor/Dependencies.xml:8
-    implementation 'com.applovin.mediation:facebook-adapter:[6.17.0.0]' // Assets/MaxSdk/Mediation/Facebook/Editor/Dependencies.xml:8
-    implementation 'com.applovin.mediation:google-adapter:[23.1.0.0]' // Assets/MaxSdk/Mediation/Google/Editor/Dependencies.xml:5
-    implementation 'com.applovin.mediation:unityads-adapter:4.11.3.0' // Assets/MaxSdk/Mediation/UnityAds/Editor/Dependencies.xml:4
-    implementation 'com.applovin:applovin-sdk:12.5.0' // Assets/MaxSdk/AppLovin/Editor/Dependencies.xml:4
-    implementation 'com.google.android.gms:play-services-base:16.1.0' // Assets/MaxSdk/Mediation/Chartboost/Editor/Dependencies.xml:9
+    implementation 'com.applovin.mediation:google-adapter:[23.2.0.0]' // Assets/MaxSdk/Mediation/Google/Editor/Dependencies.xml:5
+    implementation 'com.applovin.mediation:unityads-adapter:4.12.2.0' // Assets/MaxSdk/Mediation/UnityAds/Editor/Dependencies.xml:4
+    implementation 'com.applovin:applovin-sdk:12.6.0' // Assets/MaxSdk/AppLovin/Editor/Dependencies.xml:4
+    implementation 'com.google.android.ump:user-messaging-platform:2.+' // Assets/MaxSdk/AppLovin/Editor/Dependencies.xml:5
 // Android Resolver Dependencies End
 **DEPS**}
 
